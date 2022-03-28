@@ -10,7 +10,7 @@ import { SharedModule } from '../shared/shared.module';
     AuthModalComponent
   ],
   imports: [
-    CommonModule
+    CommonModule, SharedModule
   ],
   exports: [AuthModalComponent]
 })
