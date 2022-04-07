@@ -6,7 +6,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./auth-modal.component.scss']
 })
 export class AuthModalComponent implements OnInit {
-
   constructor() { }
 
   ngOnInit(): void {
