@@ -11,22 +11,22 @@ export class ModalService {
   constructor() { }
   registerModal(id: string) {
     this.modals.push({ id, visible: false })
-    console.log('register', this.modals)
+    // console.log('register', this.modals)
   }
   private findModal(id: string) { return this.modals.find(el => el.id === id) }
 
   unregister(id: string) {
     this.modals = this.modals.filter(el => el.id !== id)
-    console.log('unregister', this.modals)
+    // console.log('unregister', this.modals)
   }
 
   isModal(id: string) {
-    console.log('isModal', this.modals)
+    // console.log('isModal', this.modals)
     return !!this.findModal(id)?.visible
   }
 
   toggleModal(id: string) {
-    console.log('toggle', this.modals)
+    // console.log('toggle', this.modals)
     const modal = this.findModal(id)
     if (modal) modal.visible = !modal.visible
   }
