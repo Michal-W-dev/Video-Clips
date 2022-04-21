@@ -7,6 +7,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
+  showAlert = false;
+  alertMsg = ''
+  alertColor: 'indigo' = 'indigo';
 
   registerForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
@@ -17,11 +20,13 @@ export class RegisterComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   register() {
     console.log(this.registerForm)
+    this.showAlert = true;
+    this.alertMsg = 'Please wait! Your account is being created.'
+    this.alertColor = 'indigo'
   }
 
   getControl(inputName: string) { return this.registerForm.get(inputName) as FormControl }
