@@ -1,0 +1,14 @@
+<input [formControl]="control" [type]="type" class="block w-full py-1.5 px-3 text-gray-200 border border-gray-400 transition
+                duration-500 focus:outline-none rounded bg-transparent focus:border-indigo-400"
+  [placeholder]="placeholder" />
+
+<ng-container *ngIf="control.touched">
+  <p class="text-red-400" *ngIf="control.hasError('required')">Field is required.</p>
+  <p class="text-red-400" *ngIf="control.hasError('minlength')">{{errorMinLength}}</p>
+  <p class="text-red-400" *ngIf="control.hasError('email')">Please enter valid email.</p>
+  <p class="text-red-400" *ngIf="control.hasError('pattern')">Password must be at least 5 characters, must contain at
+    least 1 uppercase letter, 1 lowercase letter, and 1 number.</p>
+</ng-container>
+
+<!-- <p class="text-red-400">{{control.touched && control.hasError('required') ? 'Field is required'
+  : control.hasError('minlength') ? errorMinLength : ''}} </p> -->

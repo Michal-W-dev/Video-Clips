@@ -10,7 +10,8 @@ export class ModalService {
   private modals: IModal[] = [];
   constructor() { }
   registerModal(id: string) {
-    this.modals.push({ id, visible: false })
+    // TODO
+    this.modals.push({ id, visible: true })
     // console.log('register', this.modals)
   }
   private findModal(id: string) { return this.modals.find(el => el.id === id) }
