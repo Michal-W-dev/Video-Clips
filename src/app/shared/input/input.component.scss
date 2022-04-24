@@ -1,0 +1,13 @@
+p {
+  transform: scale(0.8, 0);
+  transform-origin: top;
+  height: 8px;
+  animation: showError 0.25s forwards ease-in;
+}
+
+@keyframes showError {
+  to {
+    transform: scale(1);
+    height: 12px;
+  }
+}

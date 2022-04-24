@@ -1,5 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, NgForm } from '@angular/forms';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { NgForm } from '@angular/forms';
+import { delay, interval, map, take, takeLast, timer } from 'rxjs';
+import { AlertService } from 'src/app/services/alert.service';
 
 @Component({
   selector: 'app-login',
@@ -8,12 +11,34 @@ import { FormGroup, NgForm } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
   @ViewChild('f') loginForm!: NgForm;
-  constructor() { }
+  pendingSubmission = false;
+  user = { email: '', password: '' }
 
-  ngOnInit(): void {
+
+  constructor(private auth: AngularFireAuth, public alert: AlertService) { }
+
+  ngOnInit(): void { }
+
+  async login() {
+    this.alert.show('indigo', "Please wait! We're logging you in.")
+    const { email, password } = this.loginForm.value
+    try {
+      await this.auth.signInWithEmailAndPassword(email, password)
+    } catch (e) {
+      this.alert.show('red', 'An unexpected error occurred. Please try again later.')
+      this.pendingSubmission = false;
+      return;
+    }
+    this.alert.show('green', 'You are now logged in!')
   }
 
-  onSubmit() {
-    console.log(this.loginForm.value)
+  loginGuest() {
+    this.user = { email: '', password: '' }
+    const email = 'guest@guest.pl'
+    const password = '321321'
+    interval(30).pipe(map(i => this.user.email += email[i]), take(email.length)).subscribe()
+    timer(600, 35).pipe(map(i => this.user.password += password[i]), take(password.length), takeLast(1), delay(1)).subscribe({
+      next: () => this.login()
+    })
   }
 }

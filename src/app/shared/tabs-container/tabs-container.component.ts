@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, ContentChildren, Input, OnInit, QueryList } from '@angular/core';
+import { AfterContentInit, Component, ContentChildren, QueryList } from '@angular/core';
 import { TabComponent } from '../tab/tab.component';
 
 
@@ -15,7 +15,7 @@ export class TabsContainerComponent implements AfterContentInit {
   ngAfterContentInit(): void {
     const activeTab = this.tabs?.find(tab => tab.active)
     // TODO
-    if (!activeTab) this.selectTab(this.tabs!.last)
+    if (!activeTab) this.selectTab(this.tabs!.first)
   }
 
   selectTab(tab: TabComponent) {

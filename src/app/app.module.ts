@@ -8,12 +8,14 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { environment } from 'src/environments/environment';
 import { AngularFireModule } from '@angular/fire/compat'
 import { AngularFireAuthModule } from '@angular/fire/compat/auth'
-import { AngularFirestoreModule } from '@angular/fire/compat/firestore'
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { DelayPipe } from './pipes/delay.pipe'
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavbarComponent
+    NavbarComponent,
+    DelayPipe
   ],
   imports: [
     BrowserModule,
