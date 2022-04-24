@@ -13,7 +13,7 @@ import { UploadComponent } from './upload/upload.component';
   ],
   imports: [
     CommonModule,
-    VideoRoutingModule
+    VideoRoutingModule,
   ]
 })
 export class VideoModule { }
