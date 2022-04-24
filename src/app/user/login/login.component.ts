@@ -37,8 +37,7 @@ export class LoginComponent implements OnInit {
     const email = 'guest@guest.pl'
     const password = '321321'
     interval(30).pipe(map(i => this.user.email += email[i]), take(email.length)).subscribe()
-    timer(600, 35).pipe(map(i => this.user.password += password[i]), take(password.length), takeLast(1), delay(1)).subscribe({
-      next: () => this.login()
-    })
+    timer(600, 35).pipe(map(i => this.user.password += password[i]), take(password.length), delay(1))
+      .subscribe({ complete: () => this.login() })
   }
 }

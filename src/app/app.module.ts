@@ -9,13 +9,17 @@ import { environment } from 'src/environments/environment';
 import { AngularFireModule } from '@angular/fire/compat'
 import { AngularFireAuthModule } from '@angular/fire/compat/auth'
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
-import { DelayPipe } from './pipes/delay.pipe'
+import { DelayPipe } from './pipes/delay.pipe';
+import { HomeComponent } from './home/home.component';
+import { AboutComponent } from './about/about.component'
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    DelayPipe
+    DelayPipe,
+    HomeComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
@@ -23,7 +27,7 @@ import { DelayPipe } from './pipes/delay.pipe'
     UserModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
-    AngularFirestoreModule
+    AngularFirestoreModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
