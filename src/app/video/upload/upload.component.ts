@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AngularFireStorage } from '@angular/fire/compat/storage'
+import { v4 as uuid } from 'uuid'
 
 @Component({
   selector: 'app-upload',
@@ -13,21 +15,21 @@ export class UploadComponent implements OnInit {
 
   title = new FormControl('', [Validators.required, Validators.minLength(3)])
   uploadForm = new FormGroup({ title: this.title })
-  constructor() { }
+  constructor(private storage: AngularFireStorage) { }
 
   ngOnInit(): void { }
 
   storeFile(e: Event) {
     this.file = (e as DragEvent).dataTransfer?.files.item(0) ?? null
     if (!this.file || this.file.type !== 'video/mp4') return
-    // if (!this.file) return
-    const fileName = this.file.name.split('.').slice(0, -1).join('.')
-    this.title.setValue(fileName)
+    const name = this.file.name.split('.').slice(0, -1).join('.')
+    this.title.setValue(name)
     this.isFileLoaded = true
-
   }
 
   uploadFile() {
-    console.log('File was uploaded.')
+    const clipFileName = this.title.value.split(' ').join('-').substring(0, 12) + uuid().substring(0, 5)
+    const clipPath = `clips/${clipFileName}.mp4`
+    this.storage.upload(clipPath, this.file).catch(e => console.log(e))
   }
 }
