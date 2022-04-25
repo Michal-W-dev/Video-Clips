@@ -2,10 +2,13 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ManageComponent } from './manage/manage.component';
 import { UploadComponent } from './upload/upload.component';
+import { AngularFireAuthGuard, redirectUnauthorizedTo } from '@angular/fire/compat/auth-guard'
+
+const redirectUnauthorizedToHome = () => redirectUnauthorizedTo('/home')
 
 const routes: Routes = [
-  { path: 'manage', component: ManageComponent },
-  { path: 'upload', component: UploadComponent },
+  { path: 'manage', component: ManageComponent, data: { authGuardPipe: redirectUnauthorizedToHome }, canActivate: [AngularFireAuthGuard] },
+  { path: 'upload', component: UploadComponent, data: { authGuardPipe: redirectUnauthorizedToHome }, canActivate: [AngularFireAuthGuard] },
 ];
 
 @NgModule({

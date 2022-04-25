@@ -6,12 +6,13 @@ import { TabComponent } from './tab/tab.component';
 import { InputComponent } from './input/input.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AlertComponent } from './alert/alert.component';
+import { DragEventDirective } from './directives/drag-event.directive';
 
 
 
 @NgModule({
-  declarations: [ModalComponent, TabsContainerComponent, TabComponent, InputComponent, AlertComponent],
+  declarations: [ModalComponent, TabsContainerComponent, TabComponent, InputComponent, AlertComponent, DragEventDirective],
   imports: [CommonModule, ReactiveFormsModule],
-  exports: [ModalComponent, TabsContainerComponent, TabComponent, InputComponent, AlertComponent]
+  exports: [ModalComponent, TabsContainerComponent, TabComponent, InputComponent, AlertComponent, DragEventDirective]
 })
 export class SharedModule { }
