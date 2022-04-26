@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { NgForm } from '@angular/forms';
-import { delay, interval, map, take, takeLast, timer } from 'rxjs';
+import { delay, interval, last, map, take, timer } from 'rxjs';
 import { AlertService } from 'src/app/services/alert.service';
 
 @Component({
@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
     this.user = { email: '', password: '' }
     const email = 'guest@guest.pl'
     const password = '321321'
-    interval(30).pipe(map(i => this.user.email += email[i]), take(email.length)).subscribe()
+    interval(30).pipe(map(i => this.user.email += email[i]), take(email.length), last()).subscribe()
     timer(600, 35).pipe(map(i => this.user.password += password[i]), take(password.length), delay(1))
       .subscribe({ complete: () => this.login() })
   }
