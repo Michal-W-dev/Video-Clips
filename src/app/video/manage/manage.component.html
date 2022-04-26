@@ -15,7 +15,7 @@
 <div class="container mx-auto my-8">
   <!-- Video List -->
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-    <div *ngFor="let cardNumber of [1,2,3,4,5,6]"
+    <div *ngFor="let clip of clips; let i = index;"
       class="mt-6 rounded-tl-2xl rounded-br-2xl shadow-xl bg-secondary flex flex-col justify-start">
 
       <!-- Image -->
@@ -28,7 +28,7 @@
 
         <!-- Link -->
         <a href="#" class="font-bold mb-2">
-          Game Highlighting Clip {{cardNumber}}
+          {{clip.title}}
         </a>
         <a href="#" class="bg-gray-400 text-white px-2 py-1 ml-2 text-sm rounded">
           Copy Link
