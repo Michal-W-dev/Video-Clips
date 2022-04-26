@@ -1,0 +1,17 @@
+.Alert {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+  margin-bottom: 0.6rem;
+  min-height: 0;
+  transform: scale(1, 0);
+  animation: showAlert .11s forwards ease-in;
+}
+
+@keyframes showAlert {
+  to {
+    transform: scale(1);
+    min-height: 3.6rem;
+  }
+}

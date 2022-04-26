@@ -1,3 +1,6 @@
-<div *ngIf="showAlert" [ngClass]="bgColor" class="text-white text-center font-bold p-4 mb-4 rounded-md">
-  {{this.msg}}
+<div *ngIf="showAlert" [ngClass]="bgColor" class="Alert text-white font-bold rounded-md">
+  <div>
+    <p>{{this.msg}}</p>
+    <ng-content></ng-content>
+  </div>
 </div>
