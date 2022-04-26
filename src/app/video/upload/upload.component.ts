@@ -27,6 +27,7 @@ export class UploadComponent implements OnDestroy {
 
   title = new FormControl('', [Validators.required, Validators.minLength(3)])
   uploadForm = new FormGroup({ title: this.title })
+
   constructor(
     private storage: AngularFireStorage,
     private alert: AlertService,
@@ -37,10 +38,7 @@ export class UploadComponent implements OnDestroy {
     auth.user.subscribe(user => this.user = user)
   }
 
-  ngOnDestroy(): void {
-    this.task?.cancel()
-  }
-
+  ngOnDestroy(): void { this.task?.cancel() }
 
   storeFile(e: Event) {
     // Retrieve data from (dragged or inserted) file

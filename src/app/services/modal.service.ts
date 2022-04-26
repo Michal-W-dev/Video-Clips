@@ -8,16 +8,12 @@ interface IModal {
 @Injectable({ providedIn: 'root' })
 export class ModalService {
   private modals: IModal[] = [];
-  constructor() { }
-  registerModal(id: string) {
-    // TODO
-    this.modals.push({ id, visible: false })
-  }
+
   private findModal(id: string) { return this.modals.find(el => el.id === id) }
 
-  unregister(id: string) {
-    this.modals = this.modals.filter(el => el.id !== id)
-  }
+  registerModal(id: string) { this.modals.push({ id, visible: false }) }
+
+  unregister(id: string) { this.modals = this.modals.filter(el => el.id !== id) }
 
   isModal(id: string) {
     return !!this.findModal(id)?.visible
