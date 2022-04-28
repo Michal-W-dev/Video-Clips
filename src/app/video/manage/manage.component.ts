@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 import IClip from 'src/app/models/clip.model';
 import { ClipService } from 'src/app/services/clip.service';
 import { ModalService } from 'src/app/services/modal.service';
@@ -10,16 +11,22 @@ import { ModalService } from 'src/app/services/modal.service';
   styleUrls: ['./manage.component.scss']
 })
 export class ManageComponent implements OnInit {
-  videoOrder = '1'
+  videoOrder: string;
+  sort$: BehaviorSubject<string>
   clips: IClip[] = []
   activeClip: IClip | null = null;
-  constructor(private router: Router, private route: ActivatedRoute, private clipService: ClipService, private modal: ModalService) { }
+
+  constructor(public router: Router, public route: ActivatedRoute, private clipService: ClipService, private modal: ModalService) {
+    this.videoOrder = clipService.videoOrder;
+    this.sort$ = new BehaviorSubject(this.videoOrder);
+  }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      this.videoOrder = params['sort'] === '2' ? params['sort'] : '1'
+    this.route.queryParams.subscribe(({ sort }) => {
+      this.videoOrder = this.clipService.videoOrder = sort === '2' ? sort : sort === '1' ? '1' : this.videoOrder;
+      this.sort$.next(this.videoOrder)
     })
-    this.clipService.getUserClips().subscribe(docs => this.clips = docs)
+    this.clipService.getUserClips(this.sort$).subscribe(docs => this.clips = docs)
   }
 
   sort(e: Event) {
@@ -43,6 +50,12 @@ export class ManageComponent implements OnInit {
     e.preventDefault();
     this.clipService.deleteClip(clip)
     this.clips = this.clips.filter(({ docID }) => docID !== clip.docID)
+  }
+
+  copyLink(clipUrl: string) { navigator.clipboard.writeText(clipUrl) }
+
+  navigateToClip(clip: IClip) {
+    this.router.navigate(['/clip', clip.fileName])
   }
 
 }

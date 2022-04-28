@@ -1,7 +1,7 @@
 <!-- Top Bar -->
 <section class="container mx-auto my-8 bg-secondary p-6">
   <div class="rounded relative flex justify-between">
-    <a href="#" class="bg-indigo-400 text-white py-4 px-10 text-xl">Upload Videos</a>
+    <a routerLink="/upload" class="bg-indigo-400 text-white py-4 px-10 text-xl">Upload Videos</a>
 
     <!-- Sort Videos -->
     <select (change)="sort($event)" class="text-black px-8 text-xl outline-none appearance-none">
@@ -19,8 +19,8 @@
       class="mt-6 rounded-tl-2xl rounded-br-2xl shadow-xl bg-secondary flex flex-col justify-start">
 
       <!-- Image -->
-      <a class="cursor-pointer">
-        <img class="card-img-top rounded-tl-2xl w-full" src="assets/img/1.jpg">
+      <a (click)="navigateToClip(clip)" class="cursor-pointer">
+        <img class="card-img-top rounded-tl-2xl w-full" src="assets/img/{{i <= 2  ? i+1 : 1}}.jpg">
       </a>
 
       <!-- Body -->
@@ -30,7 +30,7 @@
         <a class="font-bold mb-2 cursor-pointer">
           {{clip.title}}
         </a>
-        <a class="bg-gray-400 text-white px-2 py-1 ml-2 text-sm rounded cursor-pointer">
+        <a (click)="copyLink(clip.url)" class="bg-gray-400 text-white px-2 py-1 ml-2 text-sm rounded cursor-pointer">
           Copy Link
         </a>
 

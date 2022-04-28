@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, DocumentReference, QuerySnapshot } from '@angular/fire/compat/firestore'
 import IClip from '../models/clip.model';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { map, of, switchMap } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, of, switchMap } from 'rxjs';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 
 @Injectable({
@@ -10,6 +10,7 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 })
 export class ClipService {
   public clipsCollection: AngularFirestoreCollection<IClip>;
+  videoOrder: '1' | '2' = '1'
 
   constructor(private db: AngularFirestore, private auth: AngularFireAuth, private storage: AngularFireStorage) {
     this.clipsCollection = db.collection('clips')
@@ -19,13 +20,15 @@ export class ClipService {
     return this.clipsCollection.add(data)
   }
 
-  getUserClips() {
-    return this.auth.user.pipe(
-      switchMap(user => {
+  getUserClips($sort: BehaviorSubject<string>) {
+    return combineLatest([this.auth.user, $sort]).pipe(
+      switchMap(values => {
+        const [user, sort] = values;
         if (!user) return of([])
-        const query = this.clipsCollection.ref.where('uid', '==', user.uid)
+        const query = this.clipsCollection.ref.where('uid', '==', user.uid).orderBy('timestamp', sort === '1' ? 'desc' : 'asc')
         return query.get()
-      }), map(snapshot => (snapshot as QuerySnapshot<IClip>).docs),
+      }),
+      map(snapshot => (snapshot as QuerySnapshot<IClip>).docs),
       map(docs => docs?.map(doc => ({ docID: doc.id, ...doc.data() })))
     )
   }
@@ -41,4 +44,5 @@ export class ClipService {
     // Delete from firestore
     await this.clipsCollection.doc(clip.docID).delete()
   }
+
 }
