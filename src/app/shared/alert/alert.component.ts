@@ -20,7 +20,8 @@ export class AlertComponent implements OnInit, OnDestroy {
       this.showAlert = showAlert;
     })
   }
-  ngOnInit(): void { }
+  ngOnInit(): void {
+  }
 
   ngOnDestroy(): void {
     this.showAlert = false;

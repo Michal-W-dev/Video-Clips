@@ -14,7 +14,6 @@ export class TabsContainerComponent implements AfterContentInit {
 
   ngAfterContentInit(): void {
     const activeTab = this.tabs?.find(tab => tab.active)
-    // TODO
     if (!activeTab) this.selectTab(this.tabs!.first)
   }
 

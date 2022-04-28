@@ -19,11 +19,7 @@ export class ManageComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.videoOrder = params['sort'] === '2' ? params['sort'] : '1'
     })
-    this.clipService.getUserClips().subscribe(docs => {
-      this.clips = []
-      docs.forEach(doc => this.clips.push({ docID: doc.id, ...doc.data() }))
-      console.log(this.clips)
-    })
+    this.clipService.getUserClips().subscribe(docs => this.clips = docs)
   }
 
   sort(e: Event) {
@@ -38,12 +34,15 @@ export class ManageComponent implements OnInit {
   }
 
   update($event: IClip) {
-    console.log($event.title)
-    console.log(1, this.clips[1].title)
     this.clips.forEach((clip, idx) => {
-      if (clip.docID === $event.docID) { this.clips[idx].title = $event.title; console.log('fdslkjfds') }
+      if (clip.docID === $event.docID) this.clips[idx].title = $event.title;
     })
-    console.log(2, this.clips[1].title)
+  }
+
+  deleteClip(e: Event, clip: IClip) {
+    e.preventDefault();
+    this.clipService.deleteClip(clip)
+    this.clips = this.clips.filter(({ docID }) => docID !== clip.docID)
   }
 
 }
