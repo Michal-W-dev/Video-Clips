@@ -45,4 +45,8 @@ export class ClipService {
     await this.clipsCollection.doc(clip.docID).delete()
   }
 
+  getClip(fileName: string) {
+    return this.clipsCollection.ref.where('fileName', '==', fileName).get()
+  }
+
 }

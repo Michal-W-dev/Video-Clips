@@ -79,7 +79,7 @@ export class UploadComponent implements OnDestroy {
           timestamp: firebase.firestore.FieldValue.serverTimestamp()
         }
         const clipDocRef = await this.clipService.createClip(clip)
-        setTimeout(() => this.router.navigate(['clip', clipDocRef.id]), 1500)
+        setTimeout(() => this.router.navigate(['/clip', clip.fileName]), 1400)
       },
       error: (e) => this.alert.show('red', 'Upload failed! Please try again later.')
     }).add(() => { this.showPercentage = false; this.uploadForm.enable() })
