@@ -1,0 +1,62 @@
+.img {
+  position: relative;
+  .copied {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    &::after {
+      content: 'COPIED';
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 2.5rem;
+      font-style: italic;
+      width: 100%;
+      height: 100%;
+      transform: translate(-100%);
+      text-shadow: 1px 1px black, 1px 1px 1px black, 1px 1px 2px black;
+      animation: copied-text 1.7s cubic-bezier(0.1, 0.7, 1.0, 0.1) forwards;
+    }
+    &::before {
+      content: '';
+      position: absolute;
+      font-size: 2rem;
+      color: white;
+      background-color: rgba(105, 90, 205, 0.75);
+      border-radius: 50%;
+      width: 15%;
+      height: 11%;
+      left: -80px;
+      top: 0;
+      transform: scale(0);
+      animation: copied-bg 2.2s;
+    }
+  }
+}
+
+@keyframes copied-bg {
+  70% {
+    transform: scale(40)
+  }
+  75% {
+    transform: scale(40)
+  }
+}
+
+@keyframes copied-text {
+  35% {
+    transform: translate(0)
+  }
+  85% {
+    transform: scale(1)
+  }
+  95% {
+    transform: scale(1.2)
+  }
+  100% {
+    transform: scale(0)
+  }
+}

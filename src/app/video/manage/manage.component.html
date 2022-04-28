@@ -19,10 +19,12 @@
       class="mt-6 rounded-tl-2xl rounded-br-2xl shadow-xl bg-secondary flex flex-col justify-start">
 
       <!-- Image -->
-      <a (click)="navigateToClip(clip)" class="cursor-pointer">
+      <!-- <div class="imgWrapper"> -->
+      <a (click)="navigateToClip(clip)" class="cursor-pointer img">
+        <span [ngClass]="{copied:  copiedIdx === i}"></span>
         <img class="card-img-top rounded-tl-2xl w-full" src="assets/img/{{i <= 2  ? i+1 : 1}}.jpg">
       </a>
-
+      <!-- </div> -->
       <!-- Body -->
       <div class="p-6 text-2xl">
 
@@ -30,7 +32,7 @@
         <a class="font-bold mb-2 cursor-pointer">
           {{clip.title}}
         </a>
-        <a (click)="copyLink(clip.url)" class="bg-gray-400 text-white px-2 py-1 ml-2 text-sm rounded cursor-pointer">
+        <a (click)="copyLink(clip.url, i)" class="bg-gray-400 text-white px-2 py-1 ml-2 text-sm rounded cursor-pointer">
           Copy Link
         </a>
 
