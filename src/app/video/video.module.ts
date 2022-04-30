@@ -13,13 +13,13 @@ import { EditComponent } from './edit/edit.component';
   declarations: [
     ManageComponent,
     UploadComponent,
-    EditComponent
+    EditComponent,
   ],
   imports: [
     CommonModule,
     VideoRoutingModule,
     SharedModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
 })
 export class VideoModule { }

@@ -4,9 +4,12 @@
 
     <!-- Upload Dropbox -->
     <ng-container *ngIf="!isFileLoaded">
+
       <div appDragEvent (drop)="storeFile($event)" class="w-full px-10 py-40 rounded text-center cursor-pointer border-2 border-dashed border-gray-400 transition 
     duration-500 hover:text-white hover:bg-indigo-500/10 hover:border-indigo-400 hover:border-solid text-xl">
-        <h5>Drop your file here (mp4 only!)</h5>
+
+        <h5>Drop your file here (mp4 only!) </h5>
+
       </div>
       <input type="file" class="mt-2" (change)="storeFile($event)">
     </ng-container>
@@ -21,22 +24,25 @@
       <!-- Form -->
       <form [formGroup]="uploadForm" (ngSubmit)="uploadFile()">
         <!-- Screenshots -->
-        <h2 class="mb-4 text-xl pt-3">Select a Thumbnail</h2>
+        <h2 class="mb-4 text-xl pt-3">Select a Thumbnail
+          <app-ping [show]="isImgLoading || showPercentage"></app-ping>
+        </h2>
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          <div *ngFor="let imgNum of [1,2,3]; let i = index;" [ngClass]="{'border-green-400':idx === i}"
-            class="border-8 cursor-pointer border-transparent" (click)="idx = i">
-            <img src="assets/img/{{imgNum}}.jpg">
+          <div *ngFor="let src of imgSources; let i = index;" [ngClass]="{'border-green-400':imgIdx === i}"
+            class="border-8 cursor-pointer border-transparent rounded-lg" (click)="imgIdx = i">
+            <img *ngIf="!src" src="assets/img/{{i+1}}.jpg" class="rounded-lg">
+            <img *ngIf="src" [src]="src" class="rounded-lg">
           </div>
         </div>
 
         <!-- Title -->
-        <div class="mt-4">
+        <div class=" mt-4">
           <label class="block text-xl mb-4">Title</label>
           <app-input [control]="title" placeholder="Enter video title"></app-input>
         </div>
 
         <div class="mt-4 text-right">
-          <button type="submit" [disabled]="!isFileLoaded || uploadForm.invalid || showPercentage" class=" inline-flex justify-center py-2 px-4 border border-transparent shadow-sm rounded-md text-white
+          <button type="submit" [disabled]="!isFileLoaded || uploadForm.invalid || showPercentage" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm rounded-md text-white
             bg-indigo-600 hover:bg-indigo-700 focus:outline-none disabled:opacity-70 disabled:bg-indigo-400"
             title="{{uploadForm.invalid ? 'Form is not valid' : 'Drop your mp4 file first.'}}">
             Publish

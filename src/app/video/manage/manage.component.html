@@ -16,29 +16,29 @@
   <!-- Video List -->
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
     <div *ngFor="let clip of clips; let i = index;"
-      class="mt-6 rounded-tl-2xl rounded-br-2xl shadow-xl bg-secondary flex flex-col justify-start">
+      class="card bg-secondary drop-shadow-2xl flex flex-col justify-start">
 
       <!-- Image -->
       <!-- <div class="imgWrapper"> -->
       <a (click)="navigateToClip(clip)" class="cursor-pointer img">
         <span [ngClass]="{copied:  copiedIdx === i}"></span>
-        <img class="card-img-top rounded-tl-2xl w-full" src="assets/img/{{i <= 2  ? i+1 : 1}}.jpg">
+        <img class="card-img-top rounded-tl-md rounded-tr-md" [src]="clip.imgUrl || 'assets/img/2.jpg'">
       </a>
       <!-- </div> -->
       <!-- Body -->
-      <div class="p-6 text-2xl">
+      <div class="p-6 text-2xl mt-auto">
 
         <!-- Link -->
         <a class="font-bold mb-2 cursor-pointer">
           {{clip.title}}
         </a>
         <a (click)="copyLink(clip.url, i)" class="bg-gray-400 text-white px-2 py-1 ml-2 text-sm rounded cursor-pointer">
-          Copy Link
+          Copy Video Link
         </a>
 
       </div>
       <!-- Actions -->
-      <div class="flex text-center text-2xl bg-gray-800 p-2 mt-auto">
+      <div class="flex text-center text-2xl bg-gray-800 p-2">
         <a (click)="openModal($event, clip)"
           class="flex-1 p-2 border-right border-r-2 border-gray-700 transition cursor-pointer hover:text-indigo-400">
           <span class="material-icons text-base">build</span>

@@ -59,7 +59,7 @@ export class ManageComponent implements OnInit {
   }
 
   navigateToClip(clip: IClip) {
-    this.router.navigate(['/clip', clip.fileName])
+    this.router.navigate(['/clip', `${clip.fileName}.mp4`])
   }
 
 }
