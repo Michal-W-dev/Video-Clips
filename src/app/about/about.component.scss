@@ -1,0 +1,38 @@
+.About {
+  height: 75vh;
+  background: linear-gradient(to right bottom, rgba(83, 69, 207, 0.85), rgba(0, 0, 0, 1)), url(/assets/img/3.jpg) top;
+  background-size: cover;
+  clip-path: polygon(7% 8rem, 3% 0%, 100% 0%, 90% 85%, 0% 100%);
+  display: flex;
+  flex-direction: column;
+  font-style: italic;
+  border-radius: 6px;
+  .header,
+  footer {
+    background-color: hsla(221, 29%, 11%, 0.65);
+  }
+  .header {
+    padding: 3rem 11%;
+    font-size: 1.8rem;
+  }
+  .content {
+    flex: 1;
+  }
+  footer {
+    padding: 2rem 7.5% 4rem;
+    text-transform: uppercase;
+    font-size: 1.3rem;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .About {
+    height: 75vh;
+    clip-path: none;
+    footer,
+    .header {
+      padding: 2rem;
+    }
+  }
+
+}
