@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/compat/storage'
 import { v4 as uuid } from 'uuid'
 import { AlertService } from 'src/app/services/alert.service';
-import { combineLatest, last, switchMap } from 'rxjs';
+import { combineLatest, forkJoin, switchMap } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat/app';
 import { ClipService } from 'src/app/services/clip.service';
@@ -56,9 +56,9 @@ export class UploadComponent implements OnDestroy {
     // Check data type
     if (!this.file || this.file.type !== 'video/mp4') return
 
-    Utils.snapshooter(this.file).then(result => {
-      this.imgSources = result.snapshootsArray;
-      this.isImgLoading = result.isLoading;
+    Utils.snapshooter(this.file).then(snapshootsArray => {
+      this.imgSources = snapshootsArray;
+      this.isImgLoading = false;
     }).catch(e => this.alert.show('red', e.message || 'Something went wrong'))
 
 
@@ -87,9 +87,16 @@ export class UploadComponent implements OnDestroy {
     // putString -> like upload but you can send decode type (base64).
     this.taskImage = imgRef.putString(this.imgSources[this.imgIdx].split(',')[1], "base64", { contentType: 'image/jpg' })
 
+    // Track loading percetages from both observables.
+    combineLatest([this.taskImage.percentageChanges(), this.taskClip.percentageChanges()]).subscribe(progress => {
+      const [imgProgress, clipProgress] = progress;
+      if (!imgProgress || !clipProgress) return
+      this.percentage = (imgProgress + clipProgress) as number / 200
+    })
+
     // When storage uploads finish, ask for downloadURLs & send them to clip firebase.
-    combineLatest([this.taskImage.snapshotChanges(), this.taskClip.snapshotChanges()]).pipe(
-      last(), switchMap(() => combineLatest([imgRef.getDownloadURL(), clipRef.getDownloadURL()]))
+    forkJoin([this.taskImage.snapshotChanges(), this.taskClip.snapshotChanges()]).pipe(
+      switchMap(() => forkJoin([imgRef.getDownloadURL(), clipRef.getDownloadURL()]))
     ).subscribe({
       next: async (urlValues) => {
         const [imgUrl, url] = urlValues;

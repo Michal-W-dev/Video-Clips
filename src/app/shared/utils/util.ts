@@ -12,12 +12,12 @@ export default class Utils {
         canvas.width = img.width * size;
         canvas.height = img.height * size;
         context?.drawImage(img, 0, 0, canvas.width, canvas.height);
-        resolve(canvas.toDataURL("image/jpeg", quality));
+        resolve(canvas.toDataURL("image/jpg", quality));
       }
     });
   }
   static async snapshooter(file: File) {
-    return new Promise<{ snapshootsArray: string[], isLoading: boolean }>((resolve, reject) => {
+    return new Promise<string[]>((resolve, reject) => {
       const snapshoter = new VideoSnapshot(file);
       const vid = document.createElement('video');
       vid.src = snapshoter.videoUrl
@@ -31,7 +31,7 @@ export default class Utils {
           snapshoter.takeSnapshot(dur).then(imgSrc => {
             Utils.resizeBase64Img(imgSrc, .8, .55).then(imgLowQuality => {
               snapshootsArray.push(imgLowQuality);
-              if (durations.length - 1 === i) resolve({ snapshootsArray, isLoading: false })
+              if (durations.length - 1 === i) resolve(snapshootsArray)
             });
           })
         })
