@@ -78,6 +78,11 @@
               "browserTarget": "video-clips:build:development"
             }
           },
+          "options": {
+            "headers": {
+              "Cross-Origin-Embedder-Policy": "false"
+            }
+          },
           "defaultConfiguration": "development"
         },
         "extract-i18n": {

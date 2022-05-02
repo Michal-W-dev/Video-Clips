@@ -13,13 +13,14 @@ export class ClipComponent implements OnInit {
   fileName = '';
   clip: IClip | null = null;
 
-  constructor(public route: ActivatedRoute, private clipService: ClipService) {
-  }
+  constructor(public route: ActivatedRoute, private clipService: ClipService) { }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => this.fileName = params['id'].slice(0, -4))
-    this.clipService.getClip(this.fileName).then(snapshot => {
-      this.clip = snapshot.docs[0]?.data();
+    this.route.params.subscribe(params => {
+      this.fileName = params['id'].slice(0, -4)
+      this.clipService.getClip(this.fileName).then(snapshot => {
+        this.clip = snapshot.docs[0].data();
+      })
     })
   }
 

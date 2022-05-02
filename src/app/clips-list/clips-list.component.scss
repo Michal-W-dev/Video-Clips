@@ -1,0 +1,8 @@
+.card {
+  transition: 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  &:hover {
+    transform: skew(-1deg) rotateY(10deg) rotateX(-5deg);
+    box-shadow: 2px 1px 1px -1px slateblue, inset -1px -1px 1px slateblue;
+    text-shadow: 1px 1px slateblue;
+  }
+}

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, DocumentReference, QuerySnapshot } from '@angular/fire/compat/firestore'
 import IClip from '../models/clip.model';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { BehaviorSubject, combineLatest, map, of, switchMap } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, of, switchMap, lastValueFrom } from 'rxjs';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 
 @Injectable({
@@ -11,6 +11,8 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 export class ClipService {
   public clipsCollection: AngularFirestoreCollection<IClip>;
   videoOrder: '1' | '2' = '1'
+  pageClips: IClip[] = []
+  pendingRequest = false;
 
   constructor(private db: AngularFirestore, private auth: AngularFireAuth, private storage: AngularFireStorage) {
     this.clipsCollection = db.collection('clips')
@@ -49,6 +51,29 @@ export class ClipService {
 
   getClip(fileName: string) {
     return this.clipsCollection.ref.where('fileName', '==', fileName).get()
+  }
+
+  async getClips() {
+    if (this.pendingRequest) return
+
+    this.pendingRequest = true;
+    let query = this.clipsCollection.ref.orderBy('timestamp', 'desc').limit(3)
+    const { length } = this.pageClips;
+
+    if (length) {
+      // clip.docID
+      const lastDocID = this.pageClips[length - 1].docID
+
+      const lastDoc$ = this.clipsCollection.doc(lastDocID).get()
+      const lastDoc = await lastValueFrom(lastDoc$)
+
+      // Look for docs after lastDoc
+      query = query.startAfter(lastDoc)
+    }
+    const snapshot = await query.get()
+    snapshot.forEach(doc => this.pageClips.push({ docID: doc.id, ...doc.data() }))
+
+    this.pendingRequest = false;
   }
 
 }

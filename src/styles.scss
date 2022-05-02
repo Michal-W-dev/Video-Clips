@@ -24,12 +24,12 @@ body {
   position: absolute;
   top: 100%;
   left: 45%;
-  width: 80px;
+  width: 60px;
   height: 52px;
   border-radius: 3px;
-  box-shadow: inset 1px 1px 0px 1px violet, 1px 1px 0 1px violet;
+  box-shadow: inset 1px 1px 0px 1px rgb(193, 130, 238), 1px 1px 0 1px rgb(197, 130, 238);
   border: 1px solid rgba(132, 0, 255, 0.5);
-  transform-origin: top left;
+  transform-origin: left;
   transform: scale(0) rotate(0deg) translate(-50%, -50%);
   animation: cube 8s ease-in forwards infinite;
 }
@@ -258,12 +258,12 @@ body {
 
 @keyframes cube {
   from {
-    transform: scale(0) rotate(0deg) translate(-50%, -50%) skewX(55deg);
+    transform: scale(0) rotate(0deg) translate(-50%, -50%) skewX(10deg);
     opacity: 1;
     background-color: rgba(238, 130, 238, 0.1);
   }
   to {
-    transform: scale(1.5) rotate(960deg) translate(-50%, -50%) skewX(55deg);
+    transform: scale(1.2) rotate(960deg) translate(-50%, -50%) skewX(20deg);
     background-color: rgba(71, 61, 139, 0);
     opacity: 0;
   }
