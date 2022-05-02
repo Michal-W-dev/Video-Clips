@@ -9,9 +9,12 @@
     </div>
 
     <!-- Video Editor -->
-    <div class="relative">
+    <!-- <div class="relative aspect-[2/1] overflow-hidden"> -->
+    <div class="relative aspect-video overflow-hidden">
       <!-- Video Player -->
-      <video controls class="video-js vjs-theme-forest mx-auto" data-setup="{}" [src]="clip?.url" autoplay></video>
+      <!-- <video controls class="video-js vjs-theme-forest mx-auto" [src]="clip?.url" autoplay #videoPlayer> -->
+      <video controls class="video-js vjs-theme-forest mx-auto" #videoPlayer>
+      </video>
     </div>
   </div>
 </section>

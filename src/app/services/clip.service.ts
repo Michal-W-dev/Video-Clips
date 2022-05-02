@@ -2,19 +2,25 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, DocumentReference, QuerySnapshot } from '@angular/fire/compat/firestore'
 import IClip from '../models/clip.model';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { BehaviorSubject, combineLatest, map, of, switchMap, lastValueFrom } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, of, switchMap, lastValueFrom, Observable, from } from 'rxjs';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ClipService {
+export class ClipService implements Resolve<IClip | null> {
   public clipsCollection: AngularFirestoreCollection<IClip>;
   videoOrder: '1' | '2' = '1'
   pageClips: IClip[] = []
   pendingRequest = false;
 
-  constructor(private db: AngularFirestore, private auth: AngularFireAuth, private storage: AngularFireStorage) {
+  constructor(
+    private db: AngularFirestore,
+    private auth: AngularFireAuth,
+    private storage: AngularFireStorage,
+    private router: Router
+  ) {
     this.clipsCollection = db.collection('clips')
   }
 
@@ -49,9 +55,9 @@ export class ClipService {
     await this.clipsCollection.doc(clip.docID).delete()
   }
 
-  getClip(fileName: string) {
-    return this.clipsCollection.ref.where('fileName', '==', fileName).get()
-  }
+  // getClip(fileName: string) {
+  //   return this.clipsCollection.ref.where('fileName', '==', fileName).get()
+  // }
 
   async getClips() {
     if (this.pendingRequest) return
@@ -61,19 +67,29 @@ export class ClipService {
     const { length } = this.pageClips;
 
     if (length) {
-      // clip.docID
       const lastDocID = this.pageClips[length - 1].docID
-
       const lastDoc$ = this.clipsCollection.doc(lastDocID).get()
+
+      // Change 
       const lastDoc = await lastValueFrom(lastDoc$)
 
-      // Look for docs after lastDoc
+      // Look for docs after lastDoc with (timstamp, desc).limit(3)
       query = query.startAfter(lastDoc)
     }
     const snapshot = await query.get()
+
+    // Data is kept in clipService array, & used directly in template
     snapshot.forEach(doc => this.pageClips.push({ docID: doc.id, ...doc.data() }))
 
     this.pendingRequest = false;
   }
 
+  async resolve(route: ActivatedRouteSnapshot): Promise<IClip | null> {
+    const fileName = route.params['id'].slice(0, -4) as string
+    const snapshot = await this.clipsCollection.ref.where('fileName', '==', fileName).get()
+
+    const data = snapshot.docs[0]?.data() || null;
+    if (!data) this.router.navigateByUrl('/home');
+    return data;
+  }
 }
