@@ -15,7 +15,7 @@ export class ManageComponent implements OnInit {
   sort$: BehaviorSubject<string>
   clips: IClip[] = []
   activeClip: IClip | null = null;
-  copiedIdx!: number;
+  copiedId?: string;
 
   constructor(public router: Router, public route: ActivatedRoute, private clipService: ClipService, private modal: ModalService) {
     this.videoOrder = clipService.videoOrder;
@@ -53,9 +53,9 @@ export class ManageComponent implements OnInit {
     this.clips = this.clips.filter(({ docID }) => docID !== clip.docID)
   }
 
-  copyLink(clipUrl: string, idx: number) {
-    this.copiedIdx = idx;
-    navigator.clipboard.writeText(clipUrl)
+  copyLink(clip: IClip) {
+    this.copiedId = clip.docID;
+    navigator.clipboard.writeText(clip.url)
   }
 
   navigateToClip(clip: IClip) {
