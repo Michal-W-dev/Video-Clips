@@ -6,6 +6,7 @@
   <p class="text-red-400" *ngIf="control.hasError('required')">Field is required.</p>
   <p class="text-red-400" *ngIf="control.hasError('minlength')">{{errorMinLength}}</p>
   <p class="text-red-400" *ngIf="control.hasError('email')">Please enter valid email.</p>
+  <p class="text-red-400" *ngIf="control.hasError('emailTaken')">Email taken. Please try another email.</p>
   <p class="text-red-400" *ngIf="control.hasError('pattern')">Password must be at least 6 characters, must contain at
     least 1 uppercase letter, 1 lowercase letter, and 1 number.</p>
   <p class="text-red-400" *ngIf="control.hasError('notSame')">Password not match confirm password.</p>

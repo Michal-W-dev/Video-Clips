@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlertService } from 'src/app/services/alert.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { RegisterValidators } from '../validators/register-validators';
+import { EmailTaken } from '../validators/email-taken';
 
 @Component({
   selector: 'app-register',
@@ -10,27 +11,17 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./register.component.scss'],
   providers: [AlertService]
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
   pendingSubmission = false;
-  registerForm: FormGroup = new FormGroup({});
+  registerForm: FormGroup = new FormGroup({
+    name: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    email: new FormControl('', [Validators.required, Validators.email], [this.emailTaken.validate]),
+    password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+    confirmPassword: new FormControl('', [Validators.required]),
+  }, [RegisterValidators.matchPasswords]);
 
 
-  constructor(private authService: AuthService, private alert: AlertService) {
-  }
-
-  ngOnInit(): void {
-    this.registerForm = new FormGroup({
-      name: new FormControl('', [Validators.required, Validators.minLength(3)]),
-      email: new FormControl('', [Validators.required, Validators.email]),
-      // password: new FormControl('', [Validators.required, Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/gm)]),
-      password: new FormControl('', [Validators.required, Validators.minLength(6)]),
-      confirmPassword: new FormControl('', [Validators.required, this.checkPassword]),
-    })
-  }
-
-  checkPassword = (control: AbstractControl): ValidationErrors | null => {
-    const password = this.registerForm.get('password')?.value
-    return password !== control.value ? { 'notSame': true } : null
+  constructor(private authService: AuthService, private alert: AlertService, private emailTaken: EmailTaken) {
   }
 
   async register() {
