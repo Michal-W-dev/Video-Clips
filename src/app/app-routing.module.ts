@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { async } from '@angular/core/testing';
 import { RouterModule, Routes } from '@angular/router';
 import { AboutComponent } from './about/about.component';
 import { ClipComponent } from './clip/clip.component';
@@ -11,6 +12,12 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'about', component: AboutComponent },
   { path: 'clip/:id', component: ClipComponent, resolve: { clip: ClipService } },
+  {
+    path: "", loadChildren: async () => {
+      const module = await import("./video/video.module");
+      return module.VideoModule;
+    }
+  },
   { path: '**', component: NotFoundComponent }
 ];
 
