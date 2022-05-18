@@ -1,7 +1,6 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, NgZone, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import IClip from '../models/clip.model';
-import { ClipService } from '../services/clip.service';
 import firebase from 'firebase/compat/app';
 import videojs from 'video.js'
 
@@ -9,17 +8,20 @@ import videojs from 'video.js'
   selector: 'app-clip',
   templateUrl: './clip.component.html',
   styleUrls: ['./clip.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
+
 export class ClipComponent implements OnInit {
   @ViewChild('videoPlayer', { static: true }) target?: ElementRef<HTMLVideoElement>;
   player?: videojs.Player;
   clip: IClip | null = null;
 
-  constructor(public route: ActivatedRoute) { }
+  constructor(public route: ActivatedRoute, private zone: NgZone) { }
 
   ngOnInit(): void {
-    if (this.target) this.player = videojs(this.target.nativeElement)
+    if (this.target) {
+      this.zone.runOutsideAngular(() => this.player = videojs(this.target!.nativeElement))
+    }
 
     this.route.data.subscribe(data => {
       this.clip = data['clip'] as IClip

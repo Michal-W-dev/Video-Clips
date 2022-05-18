@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, NgZone, OnDestroy, OnInit } from '@angular/core';
 import IClip from '../models/clip.model';
 import { ClipService } from '../services/clip.service';
 import firebase from 'firebase/compat/app'
@@ -7,17 +7,18 @@ import firebase from 'firebase/compat/app'
   selector: 'app-clips-list',
   templateUrl: './clips-list.component.html',
   styleUrls: ['./clips-list.component.scss'],
-
 })
 export class ClipsListComponent implements OnInit, OnDestroy {
   @Input() scrollable = false;
 
-  constructor(public clipService: ClipService) {
+  constructor(public clipService: ClipService, private zone: NgZone) {
     this.clipService.getClips()
   }
 
   ngOnInit(): void {
-    if (this.scrollable) window.addEventListener('scroll', this.handleScroll)
+    if (this.scrollable) {
+      this.zone.runOutsideAngular(() => window.addEventListener('scroll', this.handleScroll))
+    }
   }
 
   ngOnDestroy(): void {

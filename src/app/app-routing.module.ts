@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { async } from '@angular/core/testing';
 import { RouterModule, Routes } from '@angular/router';
 import { AboutComponent } from './about/about.component';
 import { ClipComponent } from './clip/clip.component';
